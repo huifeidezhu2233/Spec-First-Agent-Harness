@@ -6,6 +6,14 @@ Spec-First Agent Harness is a CLI-first workflow engine for turning ambiguous go
 
 `Spec-First Agent Harness` 是一个面向软件交付流程的 `spec-first + llm + harness` 项目。它不让模型从一句需求直接跳到代码，而是先把目标收敛为可审阅的 `discovery / spec / plan / tasks` 工件，再进入执行与审查，让范围、审批点、状态流转和执行结果都能被持续追踪。
 
+## Why Try It
+
+If you want to experience both a spec-first workflow and an agent harness in one project, this can be a strong place to start. After configuring your LLM, you can simply describe your requirement or the thing you want to build, and the system will guide that intent into a reasonably solid result. More importantly, the process itself helps you understand how structured AI-assisted delivery works, so you build something useful while also learning along the way.
+
+## 为什么值得试试
+
+如果你想同时体验 spec 工作流和 harness，这个项目会是一个不错的选择。你可以先配置好 LLM，然后只需要简单说出你的需求，或者你想做的东西，这个系统就会尽量给你一个还不错的结果。更重要的是，你也会在这个过程中理解并学会很多东西，不只是得到输出，还能逐步理解一套更结构化的 AI 开发流程。
+
 ## 适合谁
 
 - 想让 LLM 工作流先收敛需求与范围，再进入实现的开发者或团队
@@ -197,6 +205,5 @@ python -m sfah --help
 ## 许可证
 
 MIT
-
 
 
