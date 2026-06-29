@@ -22,6 +22,7 @@ dev = [
 
 [project.scripts]
 sfah-cli = "sfah.cli:main"
+sfah-web = "sfah.web:main"
 spec-first-agent-harness = "sfah.cli:main"
 
 [tool.pytest.ini_options]

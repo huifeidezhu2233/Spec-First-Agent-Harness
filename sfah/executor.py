@@ -360,11 +360,13 @@ class ParallelExecutor:
 class TaskExecutionService:
     """任务执行服务 - 高层 API"""
 
-    def __init__(self, harness_dir: Path):
+    def __init__(self, harness_dir: Path, llm_provider=None, profile_name: str | None = None):
         """初始化任务执行服务
 
         Args:
             harness_dir: .harness 目录路径
+            llm_provider: 可选 provider，用于覆盖默认执行模型
+            profile_name: 可选 profile 名称
         """
         self.harness_dir = harness_dir
         self.work_dir = str(harness_dir.parent)
@@ -376,7 +378,7 @@ class TaskExecutionService:
         self.store = TaskStore(harness_dir)
         self.history = HistoryManager(harness_dir)
         self.execution_artifacts = ExecutionArtifactStore(harness_dir)
-        self.llm_provider = build_default_provider(start_dir=harness_dir.parent)
+        self.llm_provider = llm_provider or build_default_provider(start_dir=harness_dir.parent, profile_name=profile_name)
 
     def execute_tasks(self, task_ids: Optional[List[int]] = None) -> List[ExecutionResult]:
         """执行任务

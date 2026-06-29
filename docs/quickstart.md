@@ -1,6 +1,6 @@
 # Quick Start
 
-这份文档用最短路径带你把项目跑起来。
+这份文档用最短路径带你把项目跑起来。当前推荐入口是浏览器工作台，命令行保留为兼容和自动化方式。
 
 ## 安装
 
@@ -8,10 +8,16 @@
 pip install -e ".[dev]"
 ```
 
-或者直接用模块方式运行：
+启动本地工作台：
 
 ```bash
-python -m sfah --help
+python -m sfah.web --host 127.0.0.1 --port 8765
+```
+
+然后打开：
+
+```text
+http://127.0.0.1:8765
 ```
 
 ## 初始化
@@ -31,11 +37,10 @@ sfah-cli init
 
 ```bash
 sfah-cli llm use mock
-sfah-cli flow run --goal "实现一个支持邮箱密码登录的 API" --auto-approve
-sfah-cli plan list
-sfah-cli execute all
-sfah-cli review plan
+python -m sfah.web --host 127.0.0.1 --port 8765
 ```
+
+打开工作台后，在界面里输入目标并依次点击“理解目标”“生成规格”“确认规格说明”“生成计划”“确认执行计划”“拆解任务”“执行待办任务”。
 
 ## 接入真实模型
 
@@ -67,9 +72,9 @@ sfah-cli llm status
 sfah-cli llm test
 ```
 
-## 逐阶段交互
+## 兼容命令行方式
 
-如果你想在每一步都人工确认：
+如果你需要脚本化执行，仍然可以使用 CLI：
 
 ```bash
 sfah-cli discover start --goal "实现一个支持邮箱密码登录的 API"

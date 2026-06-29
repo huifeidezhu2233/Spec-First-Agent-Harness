@@ -76,6 +76,7 @@ def _default_project_config() -> LLMProjectConfig:
     return LLMProjectConfig(
         version=1,
         active_profile="openai_compat",
+        step_profiles={},
         profiles=[
             LLMProfile(
                 name="openai_compat",
@@ -311,3 +312,25 @@ class LLMRegistry:
             extra_headers=profile.extra_headers,
             anthropic_version=profile.anthropic_version,
         )
+
+    def profile_for_step(self, step_name: str) -> str:
+        """Return the configured profile name for a workflow step."""
+        return self.project_config.step_profiles.get(step_name) or self.project_config.active_profile
+
+    def set_step_profile(self, step_name: str, profile_name: str) -> None:
+        """Assign a profile to a workflow step and persist it."""
+        if self.get_profile(profile_name) is None:
+            available = ", ".join(item.name for item in self.list_profiles())
+            raise ValueError(f"未找到 profile: {profile_name}。可用 profile: {available}")
+        self.project_config.step_profiles[step_name] = profile_name
+        self.save()
+
+    def clear_step_profile(self, step_name: str) -> None:
+        """Make a workflow step inherit the active profile."""
+        if step_name in self.project_config.step_profiles:
+            del self.project_config.step_profiles[step_name]
+            self.save()
+
+    def resolve_step_profile(self, step_name: str) -> LLMConfig:
+        """Resolve the runtime config for a workflow step."""
+        return self.resolve_profile(self.profile_for_step(step_name))

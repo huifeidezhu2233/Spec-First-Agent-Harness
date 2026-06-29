@@ -1,10 +1,22 @@
 # Spec-First Agent Harness
 
-Spec-First Agent Harness is a CLI-first workflow engine for turning ambiguous goals into reviewable discovery, spec, plan, task, execution, and review artifacts. Instead of asking an LLM to jump directly from prompt to code, it helps teams lock scope first, add approval checkpoints, persist every stage to disk, and keep delivery traceable from intent to implementation.
+Spec-First Agent Harness is an AI product engineering workbench for turning ambiguous goals into reviewable discovery, spec, plan, task, execution, and review artifacts. Instead of asking an LLM to jump directly from prompt to code, it helps teams lock scope first, add approval checkpoints, persist every stage to disk, and keep delivery traceable from intent to implementation.
 
 `Intent -> Discovery -> Spec -> Plan -> Tasks -> Execute -> Review`
 
-`Spec-First Agent Harness` 是一个面向软件交付流程的 `spec-first + llm + harness` 项目。它不让模型从一句需求直接跳到代码，而是先把目标收敛为可审阅的 `discovery / spec / plan / tasks` 工件，再进入执行与审查，让范围、审批点、状态流转和执行结果都能被持续追踪。
+`Spec-First Agent Harness` 是一个面向 AI 产品和大型项目开发的 `spec-first + llm + harness` 工作台。它不让模型从一句需求直接跳到代码，而是先把目标收敛为可审阅的 `discovery / spec / plan / tasks` 工件，再进入执行与审查，让范围、审批点、状态流转和执行结果都能被持续追踪。
+
+现在推荐通过本地浏览器工作台使用：
+
+```bash
+python -m sfah.web --host 127.0.0.1 --port 8765
+```
+
+打开：
+
+```text
+http://127.0.0.1:8765
+```
 
 ## Why Try It
 
@@ -18,7 +30,7 @@ If you want to experience both a spec-first workflow and an agent harness in one
 
 - 想让 LLM 工作流先收敛需求与范围，再进入实现的开发者或团队
 - 需要 `human-in-the-loop` 审批点、可回放工件和可追踪状态的工程流程
-- 想把“一次性对话输出”沉淀成稳定 CLI 工作流的工具作者
+- 想把“一次性对话输出”沉淀成可视化、可修改、可回退开发流程的工具作者
 
 ## 它解决什么问题
 
@@ -35,7 +47,7 @@ If you want to experience both a spec-first workflow and an agent harness in one
 - `Flexible LLM profiles`：支持 OpenAI-compatible、Anthropic 和本地 mock profile
 - `Execution artifacts`：执行任务时为每个任务生成实施说明和执行记录
 - `Rule-based review`：从安全、性能、代码质量、可访问性、AI 残留五个维度做审查
-- `CLI-first`：所有能力都可以通过命令行跑通，适合本地开发和自动化脚本
+- `Web workbench first`：推荐通过本地端口打开中文工作台，命令行保留为兼容和自动化入口
 
 ## 快速开始
 
@@ -45,7 +57,13 @@ If you want to experience both a spec-first workflow and an agent harness in one
 pip install -e ".[dev]"
 ```
 
-推荐两种启动方式：
+推荐优先启动浏览器工作台：
+
+```bash
+python -m sfah.web --host 127.0.0.1 --port 8765
+```
+
+也可以使用兼容命令行入口：
 
 - 仓库内直接运行：`python -m sfah`
 - 安装后运行：`sfah-cli`
@@ -100,7 +118,23 @@ sfah-cli llm status
 sfah-cli llm profiles
 ```
 
-### 4. 跑一遍完整流程
+### 4. 打开工作台跑一遍完整流程
+
+```bash
+python -m sfah.web --host 127.0.0.1 --port 8765
+```
+
+然后在浏览器打开 `http://127.0.0.1:8765`，按界面上的中文步骤依次完成：
+
+- 理解目标
+- 生成规格
+- 确认规格说明
+- 生成计划
+- 确认执行计划
+- 拆解任务
+- 执行待办任务
+
+如果需要自动化，也可以继续使用 CLI：
 
 ```bash
 sfah-cli flow run --goal "实现一个支持邮箱密码登录的 API" --auto-approve
