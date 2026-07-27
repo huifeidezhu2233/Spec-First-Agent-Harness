@@ -2,6 +2,7 @@
 .venv/
 venv/
 env/
+Spec-First-Agent-Harness/
 .coverage
 .pytest_cache/
 .mypy_cache/
