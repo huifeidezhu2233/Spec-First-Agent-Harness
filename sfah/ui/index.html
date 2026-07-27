@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Product Harness 工作台</title>
+    <link rel="stylesheet" href="/ui/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" aria-label="开发流程">
+        <div class="brand">
+          <span class="brand-mark">H</span>
+          <div>
+            <strong>AI Product Harness</strong>
+            <span>可控式开发工作台</span>
+          </div>
+        </div>
+        <nav class="steps" id="steps"></nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">当前项目</p>
+            <h1 id="projectTitle">正在读取项目状态</h1>
+          </div>
+          <div class="status-strip">
+            <span id="stageBadge">阶段读取中</span>
+            <span id="profileBadge">模型读取中</span>
+          </div>
+        </header>
+
+        <section class="goal-panel" aria-label="目标输入">
+          <div class="goal-copy">
+            <p class="eyebrow">从一个想法开始</p>
+            <h2>先把目标说清楚，再让 AI 进入执行。</h2>
+          </div>
+          <div class="goal-form">
+            <textarea id="goalInput" rows="3" placeholder="例如：做一个支持邮箱密码登录、权限校验和审计日志的后台 API"></textarea>
+            <textarea id="contextInput" rows="2" placeholder="补充上下文，可选：现有技术栈、约束、必须兼容的系统"></textarea>
+            <div class="action-row">
+              <button class="primary" data-action="discovery">理解目标</button>
+              <button data-action="spec">生成规格</button>
+              <button data-action="plan">生成计划</button>
+              <button data-action="tasks">拆解任务</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="main-grid">
+          <div class="artifact-area">
+            <div class="tabs" role="tablist" aria-label="工件选择">
+              <button class="tab active" data-artifact="discovery">理解目标</button>
+              <button class="tab" data-artifact="spec">规格说明</button>
+              <button class="tab" data-artifact="plan">执行计划</button>
+              <button class="tab" data-artifact="tasks">任务拆解</button>
+            </div>
+            <div class="editor-head">
+              <div>
+                <p class="eyebrow" id="artifactPath">等待选择工件</p>
+                <h2 id="artifactTitle">理解目标</h2>
+              </div>
+              <button id="saveArtifact">保存修改</button>
+            </div>
+            <textarea id="artifactEditor" spellcheck="false" placeholder="当前工件还没有生成。"></textarea>
+          </div>
+
+          <aside class="inspector">
+            <div class="inspector-section">
+              <p class="eyebrow">现在这一步</p>
+              <h2 id="inspectorTitle">等待状态</h2>
+              <p id="inspectorText">读取项目状态后，这里会告诉你下一步该做什么。</p>
+            </div>
+            <div class="inspector-section">
+              <p class="eyebrow">确认门</p>
+              <div class="action-stack">
+                <button data-action="approveSpec">确认规格说明</button>
+                <button data-action="approvePlan">确认执行计划</button>
+                <button data-action="reviewPlan">检查计划</button>
+                <button data-action="executeSelected">执行选中任务</button>
+                <button class="strong" data-action="execute">执行待办任务</button>
+              </div>
+            </div>
+            <div class="inspector-section">
+              <p class="eyebrow">回退</p>
+              <select id="snapshotSelect" aria-label="选择快照"></select>
+              <button class="danger" data-action="rollback">恢复选中快照</button>
+              <p id="rollbackHint">保存工件后会自动出现快照。</p>
+            </div>
+            <div class="inspector-section">
+              <p class="eyebrow">任务概览</p>
+              <dl class="metrics">
+                <div><dt>全部</dt><dd id="metricTotal">0</dd></div>
+                <div><dt>待办</dt><dd id="metricTodo">0</dd></div>
+                <div><dt>完成</dt><dd id="metricDone">0</dd></div>
+              </dl>
+            </div>
+            <div class="inspector-section">
+              <p class="eyebrow">检查结果</p>
+              <div id="reviewResult" class="review-result">还没有检查。</div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="lower-grid">
+          <div class="task-panel">
+            <div class="section-head">
+              <h2>任务列表</h2>
+              <span id="taskHint">从计划拆解后显示</span>
+            </div>
+            <div id="taskList" class="task-list"></div>
+          </div>
+          <div class="history-panel">
+            <div class="section-head">
+              <h2>最近记录</h2>
+              <span>所有关键动作都会留下痕迹</span>
+            </div>
+            <div id="eventList" class="event-list"></div>
+          </div>
+        </section>
+
+        <section class="control-grid">
+          <div class="model-panel">
+            <div class="section-head">
+              <h2>每一步使用的模型</h2>
+              <span>不设置就继承默认模型</span>
+            </div>
+            <div id="modelSteps" class="model-steps"></div>
+          </div>
+          <div class="auto-panel">
+            <div class="section-head">
+              <h2>全自动运行</h2>
+              <span id="autoStatus">还没有启动</span>
+            </div>
+            <div class="auto-body">
+              <p>会按当前目标自动推进：理解目标、生成规格、确认、生成计划、拆解任务、检查并执行。模型失败时会使用本地规则继续推进。</p>
+              <div class="auto-controls">
+                <label>
+                  最多循环轮数
+                  <input id="autoCycles" type="number" min="1" max="200" value="50" />
+                </label>
+                <label class="check-label">
+                  <input id="autoExecute" type="checkbox" checked />
+                  自动执行待办任务
+                </label>
+              </div>
+              <button class="strong" data-action="autoRun">开始全自动运行</button>
+              <div id="autoLog" class="auto-log"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/ui/app.js"></script>
+  </body>
+</html>

@@ -74,6 +74,7 @@ class LLMProjectConfig:
     version: int = 1
     active_profile: str = "openai_compat"
     profiles: list[LLMProfile] = field(default_factory=list)
+    step_profiles: dict[str, str] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "LLMProjectConfig":
@@ -83,6 +84,7 @@ class LLMProjectConfig:
             version=int(data.get("version", 1)),
             active_profile=str(data.get("active_profile", "openai_compat")),
             profiles=profiles,
+            step_profiles=dict(data.get("step_profiles", {})),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -91,6 +93,7 @@ class LLMProjectConfig:
             "version": self.version,
             "active_profile": self.active_profile,
             "profiles": [profile.to_dict() for profile in self.profiles],
+            "step_profiles": self.step_profiles,
         }
 
 
